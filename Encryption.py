@@ -140,13 +140,13 @@ def Decrypt(words):
                 outputStr = outputStr + x
         if method == 2:
             if counter < len(strX):
-                x = strX[counter]                  
+                x = strX[counter]
+            y = False
             if x == "_" and counter < len(strX):
-                y = False
                 if strX[counter+1] == "_" and strX[counter+2] == "_" and strX[counter+3] == "_" and y == False:
-                    y = AlphaBet.index(strX[counter+4])
+                    z = AlphaBet.index(strX[counter+4])
                     x = strX[counter+5] + strX[counter+6] + strX[counter+7] + strX[counter+8] + strX[counter+10]
-                    x = str(int(x) / y)
+                    x = str(int(x) / z)
                     counter += 6
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
@@ -176,6 +176,8 @@ def Decrypt(words):
                     z = AlphaBet.index(strX[counter])
                     x = strX[counter+1]
                     x = str(int(x) / z)
+                    if x == 0:
+                        print(x)
                     print(AlphaBet[int(float(x))])
                     counter += 2
                     y = True
