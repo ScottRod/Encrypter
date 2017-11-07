@@ -123,7 +123,7 @@ def Decrypt(words):
     for x in strX:
         if counter == 0 and x == "!":
             method = 1
-            counter += 1
+            counter += 1 
         if counter == 0 and x == "@":
             method = 2
             counter += 1
@@ -140,17 +140,13 @@ def Decrypt(words):
                 outputStr = outputStr + x
         if method == 2:
             if counter < len(strX):
-                x = strX[counter]
-                if x == "0":
-                    y = False
-                    outputStr = outputStr + AlphaBet[int(float(x))]
-        
+                x = strX[counter]                  
             if x == "_" and counter < len(strX):
                 y = False
                 if strX[counter+1] == "_" and strX[counter+2] == "_" and strX[counter+3] == "_" and y == False:
-                    z = AlphaBet.index(strX[counter+4])
+                    y = AlphaBet.index(strX[counter+4])
                     x = strX[counter+5] + strX[counter+6] + strX[counter+7] + strX[counter+8] + strX[counter+10]
-                    x = str(int(x) / z)
+                    x = str(int(x) / y)
                     counter += 6
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
@@ -175,15 +171,17 @@ def Decrypt(words):
                     counter += 3
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
-    if counter + 1 < len(strX) and y == False:
-        if x != "_" and counter < len(strX) and strX[counter+1] != "_" and y == False:
-            z = AlphaBet.index(strX[counter])
-            x = strX[counter+1]
-            counter += 2
-                y = True
+            if counter + 1 < len(strX) and y == False:
+                if x != "_" and counter < len(strX) and strX[counter+1] != "_" and y == False:
+                    z = AlphaBet.index(strX[counter])
+                    x = strX[counter+1]
+                    x = str(int(x) / z)
+                    print(AlphaBet[int(float(x))])
+                    counter += 2
+                    y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
             counter += 1
-return outputStr
+    return outputStr
 
 
 import math
@@ -360,4 +358,3 @@ AlphaBetWindow2.mainloop()
 AlphaBetWindow3.mainloop()
 AlphaBetWindow4.mainloop()
 mainWindow.mainloop()
-
