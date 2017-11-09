@@ -1,4 +1,5 @@
 import random
+import os.path
 # this can be changed by the user
 AlphaBet = ["?","!","\n","u","7","@","(",",","9",")", ".","+",":"," ","a","8","-", "b","n","j","e", "f", "g","/", "h", "i","4", "k","0","w", "l",";","2", "m","d","5", "o","=", "p","3","6", "q","z","x", "t", "v" ,"s","c", "y","r", "1"]
 
@@ -10,6 +11,7 @@ def ReadFile(openAs):
 def WriteFile(openAs, words, file):
     File = open(file, openAs)
     File.write(words)
+
 
 # converts the file to binary
 
@@ -75,47 +77,65 @@ def STBF(fileToConvert):
     FTC.close()
     NBF.close()
 
+def CheckIfNum(x):
+    for y in range(10):
+        if x == str(y):
+            return True
+    return False
+
+def WithInBoundries(value,x,y):
+    if value > x and value < y:
+        return True
+    else:
+        return False
+
 def Encrypt(method, file):
-    if method == 1:
-        IN = file
-        File = open(IN, "r")
-        ReadFile = File.read()
-        File.close()
-        newFile = open(IN, "w")
-        newFile.write("!")
-        for x in ReadFile:
-            x = x.lower()
-            x = AlphaBet.index(x)
-            if x > 9:
-                newFile.write("_")
-            newFile.write(str(int(x)))
-        newFile.close()
-    if method == 2:
-        IN = file
-        File = open(IN, "r")
-        ReadFile = File.read()
-        File.close()
-        newFile = open(IN, "w")
-        newFile.write("@")
-        counter = 1
-        for x in ReadFile:
-            x = x.lower()
-            x = AlphaBet.index(x)
-            y = random.randint(1,len(AlphaBet)-1)
-            if x*y > 9:
-                newFile.write("_")
-            if x*y > 99:
-                newFile.write("_")
-            if x*y > 999:
-                newFile.write("_")
-            if x*y > 9999:
-                newFile.write("_")
-            newFile.write(AlphaBet[y])
-            newFile.write(str(int(x)*y))
-            counter += 1
-        newFile.close()
+    if os.path.isfile(file):
+        if method == 1:
+            IN = file
+            File = open(IN, "r")
+            ReadFile = File.read()
+            File.close()
+            newFile = open(IN, "w")
+            newFile.write("!")
+            for x in ReadFile:
+                x = x.lower()
+                x = AlphaBet.index(x)
+                if x > 9:
+                    newFile.write("_")
+                newFile.write(str(int(x)))
+            newFile.close()
+        if method == 2:
+            IN = file
+            File = open(IN, "r")
+            ReadFile = File.read()
+            File.close()
+            newFile = open(IN, "w")
+            newFile.write("@")
+            counter = 1
+            for x in ReadFile:
+                x = x.lower()
+                x = AlphaBet.index(x)
+                y = random.randint(10,len(AlphaBet)-1)
+                if x*y > 9:
+                    newFile.write("_")
+                if x*y > 99:
+                    newFile.write("_")
+                if x*y > 999:
+                    newFile.write("_")
+                if x*y > 9999:
+                    newFile.write("_")
+                newFile.write(AlphaBet[y])
+                newFile.write(str(int(x)*y))
+                counter += 1
+            newFile.close()
+    else:
+        print("The file given doesn't exist")
 
 def Decrypt(words):
+    print("Using Encryption Symbols: ")
+    for y in AlphaBet:
+        print(y)
     method = 0
     strX = words
     counter = 0
@@ -171,14 +191,13 @@ def Decrypt(words):
                     counter += 3
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
-            if counter + 1 < len(strX) and y == False:
-                if x != "_" and counter < len(strX) and strX[counter+1] != "_" and y == False:
+            if counter + 1 < len(strX) and y == False and CheckIfNum(strX[counter+1]) and not CheckIfNum(x):
+                if x != "_" and counter < len(strX) and y == False:
                     z = AlphaBet.index(strX[counter])
-                    x = strX[counter+1]
-                    x = str(int(x) / z)
-                    if x == 0:
-                        print(x)
-                    print(AlphaBet[int(float(x))])
+                    x = str(int(strX[counter+1]) / z)
+                    for i in range(1,10):
+                        if WithInBoundries(float(x), i-1, i):
+                            x = str(i)
                     counter += 2
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
@@ -308,6 +327,36 @@ TitleAlphaBet3 = createLabel(AlphaBetWindow3, "Encode 3", "copperplate")
 
 TitleAlphaBet3.pack()
 
+def UpdateAlphaBet():
+    for x in EncodeEntries:
+        AlphaBet[EncodeEntries.index(x)] = x.get()
+    y = createLabel(TitleAlphaBet3, "Updated encryption successfully", "copperplate")
+    if os.path.isfile("/users/scottblyth/Desktop/Encryption Symbols.txt"):
+        file = open("/users/scottblyth/Desktop/Encryption Symbols.txt", "w")
+        for x in AlphaBet:
+            file.write(x)
+
+UpdateEncode = createButton(TitleAlphaBet3, "Update Encryption", UpdateAlphaBet)
+
+UpdateEncode.pack()
+
+print("Use all the symbols below and only use each symbol once")
+
+if not os.path.isfile("/users/scottblyth/Desktop/Encryption Symbols.txt"):
+    random.shuffle(AlphaBet)
+    file = open("/users/scottblyth/Desktop/Encryption Symbols.txt", "w")
+    for x in AlphaBet:
+        file.write(x)
+    file.close()
+else:
+    file = open("/users/scottblyth/Desktop/Encryption Symbols.txt", "r")
+    strX = file.read()
+    counter = 0
+    for x in strX:
+        AlphaBet[counter] = x
+        counter += 1
+    file.close()
+
 EncodeEntries = []
 
 EncodeNumbers = []
@@ -333,20 +382,8 @@ for x in range(len(AlphaBet)):
 for x in EncodeEntries:
     EncodeNumbers[EncodeEntries.index(x)].pack()
     x.pack()
-
-def UpdateAlphaBet():
-    for x in EncodeEntries:
-        AlphaBet[EncodeEntries.index(x)] = x.get()
-    y = createLabel(TitleAlphaBet3, "Updated encryption successfully", "copperplate")
-
-UpdateEncode = createButton(TitleAlphaBet3, "Update Encryption", UpdateAlphaBet)
-
-UpdateEncode.pack()
-
-for x in EncodeEntries:
-    AlphaBet[EncodeEntries.index(x)] = x.get()
-
-print("Use all the symbols below and only use each symbol once")
+    
+print("Current Encryption Symbol List")
 
 for x in AlphaBet:
     if x == "\n":
