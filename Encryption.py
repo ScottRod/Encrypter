@@ -331,8 +331,8 @@ def UpdateAlphaBet():
     for x in EncodeEntries:
         AlphaBet[EncodeEntries.index(x)] = x.get()
     y = createLabel(TitleAlphaBet3, "Updated encryption successfully", "copperplate")
-    if os.path.isfile("/users/scottblyth/Desktop/Encryption Symbols.txt"):
-        file = open("/users/scottblyth/Desktop/Encryption Symbols.txt", "w")
+    if os.path.isfile("/users/scottblyth/Desktop/Current Encryption Key.txt"):
+        file = open("/users/scottblyth/Desktop/Current Encryption Key.txt", "w")
         for x in AlphaBet:
             file.write(x)
 
@@ -342,14 +342,14 @@ UpdateEncode.pack()
 
 print("Use all the symbols below and only use each symbol once")
 
-if not os.path.isfile("/users/scottblyth/Desktop/Encryption Symbols.txt"):
+if not os.path.isfile("/users/scottblyth/Desktop/Current Encryption Key.txt"):
     random.shuffle(AlphaBet)
-    file = open("/users/scottblyth/Desktop/Encryption Symbols.txt", "w")
+    file = open("/users/scottblyth/Desktop/Current Encryption Key.txt", "w")
     for x in AlphaBet:
         file.write(x)
     file.close()
 else:
-    file = open("/users/scottblyth/Desktop/Encryption Symbols.txt", "r")
+    file = open("/users/scottblyth/Desktop/Current Encryption Key.txt", "r")
     strX = file.read()
     counter = 0
     for x in strX:
