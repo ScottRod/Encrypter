@@ -148,11 +148,10 @@ def Encrypt(method, file):
             File.close()
             newFile = open(IN, "w")
             newFile.write("@")
-            counter = 1
             for x in ReadFile:
                 x = x.lower()
                 x = AlphaBet.index(x)
-                y = random.randint(5,len(AlphaBet)-1)
+                y = random.randint(1,len(AlphaBet)-1)
                 if x*y > 9:
                     newFile.write("_")
                 if x*y > 99:
@@ -163,7 +162,6 @@ def Encrypt(method, file):
                     newFile.write("_")
                 newFile.write(AlphaBet[y])
                 newFile.write(str(int(x)*y))
-                counter += 1
             newFile.close()
     else:
         print("The file given doesn't exist, please check the directory")
@@ -196,21 +194,21 @@ def Decrypt(words):
                 x = strX[counter]
             y = False
             if x == "_" and counter < len(strX):
-                if strX[counter+1] == "_" and strX[counter+2] == "_" and strX[counter+3] == "_" and y == False:
+                if strX[counter+1] == "_" and strX[counter+2] == "_" and strX[counter+3] == "_" and y == False and counter + 9 < len(strX):
                     z = AlphaBet.index(strX[counter+4])
-                    x = strX[counter+5] + strX[counter+6] + strX[counter+7] + strX[counter+8] + strX[counter+10]
+                    x = strX[counter+5] + strX[counter+6] + strX[counter+7] + strX[counter+8] + strX[counter+9]
                     x = str(int(x) / z)
                     outputStr = outputStr + AlphaBet[int(float(x))]
                     counter += 6
                     y = True
-                if strX[counter+1] == "_" and strX[counter+2] == "_" and y == False:
+                if strX[counter+1] == "_" and strX[counter+2] == "_" and y == False and counter + 7 < len(strX):
                     z = AlphaBet.index(strX[counter+3])
                     x = strX[counter+4] + strX[counter+5] + strX[counter+6] + strX[counter+7]
                     x = str(int(x) / z)
                     outputStr = outputStr + AlphaBet[int(float(x))]
                     counter += 5
                     y = True
-                if strX[counter+1] == "_" and y == False:
+                if strX[counter+1] == "_" and y == False and counter + 5 < len(strX):
                     z = AlphaBet.index(strX[counter+2])
                     x = strX[counter+3] + strX[counter+4] + strX[counter+5]
                     x = str(int(x) / z)
@@ -229,9 +227,6 @@ def Decrypt(words):
                 if x != "_" and counter < len(strX) and y == False:
                     z = AlphaBet.index(strX[counter])
                     x = str(int(strX[counter+1]) / z)
-                    for i in range(1,10):
-                        if WithInBoundries(float(x), i-1, i):
-                            x = str(i)
                     counter += 2
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
@@ -433,6 +428,17 @@ def Shuffle():
         print(x)
         file.write(x)
     file.close()
+
+def Change(file):
+    keyfile = open(file,"r")
+    strX = keyfile.read()
+    for x in strX:
+        AlphaBet[strX.index(x)] = x
+    keyfile.close()
+    print("Using Encryption Key: ")
+    for x in AlphaBet:
+        print(x)
+    
 
 AlphaBetWindow.mainloop()
 AlphaBetWindow2.mainloop()
