@@ -1,7 +1,12 @@
 import random
 import os.path
 # this can be changed by the user
+
+version = "1.0"
+
 AlphaBet = ["?","!","\n","u","7","@","(",",","9",")", ".","+",":"," ","a","8","-", "b","n","j","e", "f", "g","/", "h", "i","4", "k","0","w", "l",";","2", "m","d","5", "o","=", "p","3","6", "q","z","x", "t", "v" ,"s","c", "y","r", "1"]
+
+EncyptionMethods = ["!","@"]
 
 def ReadFile(openAs):
     newFile = open(input("File to Open: "), openAs)
@@ -12,6 +17,37 @@ def WriteFile(openAs, words, file):
     File = open(file, openAs)
     File.write(words)
 
+def Key():
+    print("Current Encryption Symbol List")
+    for x in AlphaBet:
+        if x == "\n":
+            x = "\\n"
+        if x == " ":
+            x = "space"
+        print(x)
+
+def Tutorial():
+    print("All of the commands that can be done on the ui's can also be done in text")
+    print("The functions are Encrypt(method, fileToEncrypt)")
+    print("for what methods you have downloaded type in Info()")
+    print("Decrypt(words)")
+    print("copy and paste the encrypted words in between the brackets to decypt them")
+    print("Example of Encrypting")
+    print("Encrypt(2, '/Desktop/example.txt')")
+    print("Example of Decrypting")
+    print("Decrypt('@__-704__v900__n828__+484__4650__4468__m726')")
+    print("To update the encyrption method either do it in the ui's or in the txt file")
+    print("make sure you include all of the symbols")
+
+def Info():
+    print("Version: "+version)
+    print("Downloaded Encryption Methods")
+    counter = 0
+    for x in EncyptionMethods:
+        print(x,counter+1)
+        counter += 1
+    print("For more encryption methods visit ...")
+    print("Look out for the next update on ....")
 
 # converts the file to binary
 
@@ -116,7 +152,7 @@ def Encrypt(method, file):
             for x in ReadFile:
                 x = x.lower()
                 x = AlphaBet.index(x)
-                y = random.randint(10,len(AlphaBet)-1)
+                y = random.randint(5,len(AlphaBet)-1)
                 if x*y > 9:
                     newFile.write("_")
                 if x*y > 99:
@@ -130,12 +166,9 @@ def Encrypt(method, file):
                 counter += 1
             newFile.close()
     else:
-        print("The file given doesn't exist")
+        print("The file given doesn't exist, please check the directory")
 
 def Decrypt(words):
-    print("Using Encryption Symbols: ")
-    for y in AlphaBet:
-        print(y)
     method = 0
     strX = words
     counter = 0
@@ -167,27 +200,28 @@ def Decrypt(words):
                     z = AlphaBet.index(strX[counter+4])
                     x = strX[counter+5] + strX[counter+6] + strX[counter+7] + strX[counter+8] + strX[counter+10]
                     x = str(int(x) / z)
+                    outputStr = outputStr + AlphaBet[int(float(x))]
                     counter += 6
                     y = True
-                    outputStr = outputStr + AlphaBet[int(float(x))]
                 if strX[counter+1] == "_" and strX[counter+2] == "_" and y == False:
                     z = AlphaBet.index(strX[counter+3])
                     x = strX[counter+4] + strX[counter+5] + strX[counter+6] + strX[counter+7]
                     x = str(int(x) / z)
+                    outputStr = outputStr + AlphaBet[int(float(x))]
                     counter += 5
                     y = True
-                    outputStr = outputStr + AlphaBet[int(float(x))]
                 if strX[counter+1] == "_" and y == False:
                     z = AlphaBet.index(strX[counter+2])
                     x = strX[counter+3] + strX[counter+4] + strX[counter+5]
                     x = str(int(x) / z)
+                    outputStr = outputStr + AlphaBet[int(float(x))]
                     counter += 4
                     y = True
-                    outputStr = outputStr + AlphaBet[int(float(x))]
                 if strX[counter+1] != "_" and counter + 3 < len(strX) and y == False:
                     z = AlphaBet.index(strX[counter+1])
                     x = strX[counter+2] + strX[counter+3]
                     x = str(int(x) / z)
+                    outputStr = outputStr + AlphaBet[int(float(x))]
                     counter += 3
                     y = True
                     outputStr = outputStr + AlphaBet[int(float(x))]
@@ -340,7 +374,13 @@ UpdateEncode = createButton(TitleAlphaBet3, "Update Encryption", UpdateAlphaBet)
 
 UpdateEncode.pack()
 
-print("Use all the symbols below and only use each symbol once")
+print("Type in Key() for the current setup of the encryption key")
+
+print("Type in Tutorial() for information on how to use this programme")
+
+print("Type in Info() to get your current version and where to get updates")
+
+print("Note: before doing all this close all windows excluding this one")
 
 if not os.path.isfile("/users/scottblyth/Desktop/Current Encryption Key.txt"):
     random.shuffle(AlphaBet)
@@ -382,15 +422,17 @@ for x in range(len(AlphaBet)):
 for x in EncodeEntries:
     EncodeNumbers[EncodeEntries.index(x)].pack()
     x.pack()
-    
-print("Current Encryption Symbol List")
 
-for x in AlphaBet:
-    if x == "\n":
-        x = "\\n"
-    if x == " ":
-        x = "space"
-    print(x)
+def Shuffle():
+    random.shuffle(AlphaBet)
+    print("the file is of type .txt")
+    x = input("File to store new encryption in: ")
+    print("New Symbols order")
+    file = open(x+".txt", "w")
+    for x in AlphaBet:
+        print(x)
+        file.write(x)
+    file.close()
 
 AlphaBetWindow.mainloop()
 AlphaBetWindow2.mainloop()
