@@ -420,7 +420,7 @@ for x in EncodeEntries:
 
 def Shuffle():
     random.shuffle(AlphaBet)
-    print("the file is of type .txt")
+    print("The file is a txt file")
     x = input("File to store new encryption in: ")
     print("New Symbols order")
     file = open(x+".txt", "w")
